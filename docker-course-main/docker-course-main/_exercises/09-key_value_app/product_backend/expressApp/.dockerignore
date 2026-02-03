@@ -1,0 +1,15 @@
+# Node
+node_modules
+npm-debug.log
+
+# Dev tooling
+Dockerfile*
+.dockerignore*
+nodemon.json
+
+# Git & docs
+*.md
+
+# Env / local files
+.env
+.env.*

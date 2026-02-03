@@ -1,5 +1,5 @@
 # ---------- Stage 1: Build ----------
-FROM node:18-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN npm run build
 
 
 # ---------- Stage 2: Serve ----------
-FROM nginx:alpine
+FROM nginx:stable-alpine
 
 # Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
