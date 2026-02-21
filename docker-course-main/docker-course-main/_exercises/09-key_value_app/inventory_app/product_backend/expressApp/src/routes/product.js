@@ -33,6 +33,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find().lean();
+
+    const productMap = products.reduce((acc, product) => {
+      const {key, details, price, inventory} = product;
+      acc[key] = { details, price, inventory };
+      return acc;
+    }, {});
+
+    return res.status(200).json( {productMap} );
+  } catch( err ){
+    console.error('Error fetching product:'. err );
+    res.status(500).json({
+      message: 'Internal server error'
+    });
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const { key, details, price, inventory } = req.body;

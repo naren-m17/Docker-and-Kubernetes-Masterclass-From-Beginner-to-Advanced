@@ -1,0 +1,32 @@
+include:
+  - path: product_backend/docker-compose.yaml
+  - path: react_app/docker-compose.yaml
+
+services:
+  reverse-proxy:
+    image: nginx:1.29.5
+    volumes:
+      - type: bind
+        source: ./reverse-proxy/nginx.conf
+        target: /etc/nginx/nginx.conf
+    ports:
+      - 8080:80
+    networks:
+      - inv-net
+    depends_on:
+      - react-app
+      - express-api
+  react-app:
+    depends_on:
+      - express-api
+    networks:
+      - inv-net
+
+  express-api:
+    networks:
+      - inv-net
+  mongo-db:
+
+
+networks:
+  inv-net:

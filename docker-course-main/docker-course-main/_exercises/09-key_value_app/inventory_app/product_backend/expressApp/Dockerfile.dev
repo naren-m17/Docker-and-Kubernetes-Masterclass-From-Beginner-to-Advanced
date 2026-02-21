@@ -9,7 +9,7 @@ COPY package*.json ./
 RUN npm install
 
 # Create src directory (will be mounted)
-RUN mkdir -p /app/src
+COPY . . 
 
 EXPOSE 3000
 

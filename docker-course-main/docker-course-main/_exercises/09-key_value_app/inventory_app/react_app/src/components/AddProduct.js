@@ -31,7 +31,7 @@ function AddProduct({
   };
 
   const handleSubmit = () => {
-    if (!productKey) return alert("Product key required");
+    if (!productKey) return alert("Product key required:");
 
     onAddProduct(productKey, {
       details,

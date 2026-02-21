@@ -1,0 +1,53 @@
+services:
+  express-api:
+    build: 
+      context: expressApp
+      dockerfile: Dockerfile.dev
+    container_name: express_api
+    ports:
+      - 3001:3001
+    networks:
+      - mongo-net-dev
+    environment:
+      - NODE_ENV=development
+      - PORT=3001 
+      - MONGO_USER=product_app 
+      - MONGO_PASSWORD=product_secret
+      - MONGO_HOST=mongodb-dev
+      - MONGO_PORT=27017
+      - MONGO_DB=product-key-value
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - mongo-db
+    develop:
+      watch:
+        - action: sync
+          path: ./expressApp/src
+          target: /app/src
+
+  mongo-db:
+    image: mongodb/mongodb-community-server:7.0-ubuntu2204
+    container_name: mongodb-dev
+    ports:
+      - 27018:27018
+    networks:
+      - mongo-net-dev
+    volumes:
+      - type: volume
+        source: mongo-data-dev
+        target: /data/db
+      - type: bind
+        source: init-user.js
+        target: /docker-entrypoint-initdb.d/init-user.js
+        read_only: true
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=dev_user
+      - MONGO_INITDB_ROOT_PASSWORD=dev_secret
+
+
+networks:
+  mongo-net-dev:
+
+volumes:
+  mongo-data-dev:
